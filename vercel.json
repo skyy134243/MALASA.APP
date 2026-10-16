@@ -1,5 +1,11 @@
 {
-  "version": 2,
-  "name": "malasa-app",
-  "cleanUrls": true
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
