@@ -11,44 +11,49 @@ export default function PredictiveAnalytics({ bins }) {
     <div className="card">
       <div className="card-header">
         <div>
-          <div className="card-title">📈 Predictive Analytics & Time-Series Engine (LSTM / Regression)</div>
-          <div className="card-desc">Prediksi laju pengisian tong dan estimasi jam menuju ambang batas kritis (70% / 5kg)</div>
+          <span className="category-wireframe-badge">Machine Learning Pipeline • Time-Series Forecast</span>
+          <div className="card-title">📈 Predictive Analytics Engine (LSTM / Fill Forecasting)</div>
+          <div className="card-desc">Estimasi jam menuju ambang batas kritis (70% kapasitas / 5 kg berat)</div>
         </div>
       </div>
 
-      <div className="grid-4">
+      <div className="grid-4" style={{ marginBottom: '2rem' }}>
         {forecasts.map(({ bin, forecast }) => (
           <div key={bin.id} className="stat-box">
-            <div className="stat-label">{bin.name}</div>
-            <div className="stat-value" style={{ fontSize: '18px', color: `var(--color-${forecast.urgencyColor})` }}>
-              {forecast.hoursRemaining === 0 ? 'CRITICAL (0j)' : `${forecast.hoursRemaining} Jam`}
+            <div>
+              <div className="stat-label">{bin.name}</div>
+              <div className="stat-value" style={{ fontSize: '20px', color: `var(--${forecast.urgencyColor}-primary)` }}>
+                {forecast.hoursRemaining === 0 ? 'CRITICAL (0 Jam)' : `${forecast.hoursRemaining} Jam Lagi`}
+              </div>
             </div>
-            <div className="progress-bar-container">
-              <div
-                className={`progress-bar-fill ${forecast.urgencyColor}`}
-                style={{ width: `${bin.currentFillPercent}%` }}
-              ></div>
+            <div>
+              <div className="progress-bar-container">
+                <div
+                  className={`progress-bar-fill ${forecast.urgencyColor}`}
+                  style={{ width: `${bin.currentFillPercent}%` }}
+                ></div>
+              </div>
+              <div className="stat-sub">{bin.currentFillPercent}% Kapasitas • {bin.currentWeightKg} kg</div>
             </div>
-            <div className="stat-sub">{bin.currentFillPercent}% Kapasitas | {bin.currentWeightKg} kg</div>
           </div>
         ))}
       </div>
 
-      <div style={{ marginTop: '1.5rem' }}>
-        <div className="card-title" style={{ marginBottom: '0.75rem' }}>
-          📊 Matriks Prediksi Waktu Penuh Antar Titik Komunal
+      <div>
+        <div className="card-title" style={{ marginBottom: '1rem', fontSize: '15px' }}>
+          📊 Matriks Waktu Penuh Antar Titik Komunal
         </div>
         <div className="data-table-wrapper">
           <table className="data-table">
             <thead>
               <tr>
                 <th>ID & Lokasi Tong</th>
-                <th>Kapasitas Saat Ini</th>
-                <th>Bobot Saat Ini</th>
+                <th>Kapasitas</th>
+                <th>Bobot</th>
                 <th>Laju Pengisian</th>
-                <th>Estimasi Waktu Penuh</th>
-                <th>Tingkat Urgensi</th>
-                <th>Rekomendasi Dispatch</th>
+                <th>Estimasi Penuh</th>
+                <th>Urgensi</th>
+                <th>Rekomendasi Tindakan</th>
               </tr>
             </thead>
             <tbody>

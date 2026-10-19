@@ -18,46 +18,49 @@ export default function DLHCircularEconomy({ bins, transactions, wallets }) {
     <div className="card">
       <div className="card-header">
         <div>
-          <div className="card-title">🏛️ Hub Eksekutif Dinas Lingkungan Hidup (DLH Jember)</div>
-          <div className="card-desc">Monitoring makro diversifikasi sampah dari TPA Pakusari, reduksi metana, & perputaran ekonomi</div>
+          <span className="category-wireframe-badge">Government Hub • DLH Kabupaten Jember</span>
+          <div className="card-title">🏛️ Hub Eksekutif Dinas Lingkungan Hidup</div>
+          <div className="card-desc">Monitoring makro pengalihan sampah dari TPA Pakusari, mitigasi gas metana, & perputaran kas RT</div>
         </div>
       </div>
 
-      <div className="grid-4" style={{ marginBottom: '1.5rem' }}>
+      <div className="grid-4" style={{ marginBottom: '2rem' }}>
         <div className="stat-box">
           <div className="stat-label">Total Sampah Tereduksi</div>
           <div className="stat-value">{grandTotalWasteKg} kg</div>
-          <div className="stat-sub">Teralihkan dari TPA</div>
+          <div className="stat-sub">Teralihkan dari TPA Pakusari</div>
         </div>
         <div className="stat-box">
           <div className="stat-label">Reduksi Gas Metana (CH4)</div>
           <div className="stat-value">{methaneAvoidedKg} kg</div>
-          <div className="stat-sub">Mitigasi efek gas rumah kaca</div>
+          <div className="stat-sub">Mitigasi emisi gas rumah kaca</div>
         </div>
         <div className="stat-box">
           <div className="stat-label">Total Panen Pupuk Lindi (POC)</div>
           <div className="stat-value">{grandTotalPOCLiters} L</div>
-          <div className="stat-sub">Diserap sektor pertanian</div>
+          <div className="stat-sub">Diserap sektor pertanian pekarangan</div>
         </div>
         <div className="stat-box">
           <div className="stat-label">Kepatuhan Pemilahan Warga</div>
           <div className="stat-value">{complianceRate}%</div>
-          <div className="stat-sub">Tong bebas plastik</div>
+          <div className="stat-sub">Tong bebas plastik & pakan aman</div>
         </div>
       </div>
 
       <div className="grid-2">
         {/* RT Community Wallets */}
         <div className="card" style={{ marginBottom: 0 }}>
-          <div className="card-title" style={{ marginBottom: '0.75rem' }}>
-            💰 Saldo Insentif & Kas Rukun Tetangga (RT)
+          <div className="card-header" style={{ paddingBottom: '0.75rem', marginBottom: '1rem' }}>
+            <div className="card-title" style={{ fontSize: '15px' }}>
+              💰 Saldo Insentif & Kas Rukun Tetangga (RT)
+            </div>
           </div>
           <div className="data-table-wrapper">
             <table className="data-table">
               <thead>
                 <tr>
                   <th>Rukun Tetangga (RT)</th>
-                  <th>Saldo Kas Dompet</th>
+                  <th>Saldo Dompet</th>
                   <th>Total Organik</th>
                   <th>Panen POC</th>
                 </tr>
@@ -69,11 +72,11 @@ export default function DLHCircularEconomy({ bins, transactions, wallets }) {
                   return (
                     <tr key={binId}>
                       <td><strong>{bin ? bin.name : binId}</strong></td>
-                      <td style={{ color: 'var(--color-brand)', fontWeight: 700 }}>
+                      <td style={{ color: 'var(--brand-primary)', fontWeight: 700 }}>
                         Rp {w.balanceIdr.toLocaleString()}
                       </td>
                       <td>{w.totalOrganicKg.toFixed(1)} kg</td>
-                      <td>{w.pocHarvestedLiters.toFixed(1)} L POC</td>
+                      <td>{w.pocHarvestedLiters.toFixed(1)} L</td>
                     </tr>
                   );
                 })}
@@ -84,8 +87,10 @@ export default function DLHCircularEconomy({ bins, transactions, wallets }) {
 
         {/* Transactions Ledger */}
         <div className="card" style={{ marginBottom: 0 }}>
-          <div className="card-title" style={{ marginBottom: '0.75rem' }}>
-            📜 Riwayat Transaksi Pasar Digital & Platform Fee
+          <div className="card-header" style={{ paddingBottom: '0.75rem', marginBottom: '1rem' }}>
+            <div className="card-title" style={{ fontSize: '15px' }}>
+              📜 Riwayat Transaksi Pasar Digital & Platform Fee
+            </div>
           </div>
           <div className="data-table-wrapper">
             <table className="data-table">
@@ -94,7 +99,7 @@ export default function DLHCircularEconomy({ bins, transactions, wallets }) {
                   <th>ID Trx</th>
                   <th>RT Warga</th>
                   <th>Berat</th>
-                  <th>Platform Fee</th>
+                  <th>Fee 8%</th>
                   <th>Pencairan Bersih</th>
                 </tr>
               </thead>
@@ -104,10 +109,10 @@ export default function DLHCircularEconomy({ bins, transactions, wallets }) {
                     <td><small>{t.id}</small></td>
                     <td><strong>{t.rtName}</strong></td>
                     <td>{t.weightKg} kg</td>
-                    <td style={{ color: 'var(--color-warning)' }}>
+                    <td style={{ color: 'var(--warning-text)' }}>
                       Rp {t.feeAmount.toLocaleString()} ({(t.feeRate * 100).toFixed(0)}%)
                     </td>
-                    <td style={{ color: 'var(--color-brand)', fontWeight: 700 }}>
+                    <td style={{ color: 'var(--brand-primary)', fontWeight: 700 }}>
                       Rp {t.netCitizenReward.toLocaleString()}
                     </td>
                   </tr>

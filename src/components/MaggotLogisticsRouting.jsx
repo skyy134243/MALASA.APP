@@ -44,29 +44,30 @@ export default function MaggotLogisticsRouting({ bins, onConfirmPickup }) {
       <div className="card">
         <div className="card-header">
           <div>
+            <span className="category-wireframe-badge">Smart Routing • GIS VRP Logistics</span>
             <div className="card-title">🚚 Dispatch Order & Prioritas Armada Pembudidaya</div>
-            <div className="card-desc">Algoritma Vehicle Routing Problem (VRP) & optimasi rute terpendek</div>
+            <div className="card-desc">Optimasi rute penjemputan berbasis keterisian & jarak terpendek</div>
           </div>
           <button className="btn btn-primary btn-sm" onClick={handleRecalculate}>
             🔄 Optimalkan Rute
           </button>
         </div>
 
-        <div className="grid-3" style={{ marginBottom: '1rem' }}>
+        <div className="grid-3" style={{ marginBottom: '1.75rem' }}>
           <div className="stat-box">
             <div className="stat-label">Total Jarak Tempuh</div>
             <div className="stat-value">{route.totalEstimatedKm} km</div>
-            <div className="stat-sub">Hemat bensin ~32.5%</div>
+            <div className="stat-sub">Efisiensi bahan bakar ~32.5%</div>
           </div>
           <div className="stat-box">
             <div className="stat-label">Proyeksi Biomassa</div>
             <div className="stat-value">{route.totalBiomassKg} kg</div>
-            <div className="stat-sub">Pakan segar maggot</div>
+            <div className="stat-sub">Pakan segar maggot siap kultur</div>
           </div>
           <div className="stat-box">
             <div className="stat-label">Est. Panen POC</div>
             <div className="stat-value">{route.totalLeachateLiters} L</div>
-            <div className="stat-sub">Pupuk cair terpasang</div>
+            <div className="stat-sub">Pupuk organik cair terpasang</div>
           </div>
         </div>
 
@@ -96,7 +97,7 @@ export default function MaggotLogisticsRouting({ bins, onConfirmPickup }) {
                     </span>
                   </td>
                   <td>
-                    <span style={{ color: stop.isContaminated ? 'var(--color-warning)' : 'var(--color-brand)', fontWeight: 600 }}>
+                    <span style={{ color: stop.isContaminated ? 'var(--warning-primary)' : 'var(--brand-primary)', fontWeight: 600 }}>
                       {stop.actionRequired}
                     </span>
                   </td>
@@ -111,8 +112,9 @@ export default function MaggotLogisticsRouting({ bins, onConfirmPickup }) {
       <div className="card">
         <div className="card-header">
           <div>
-            <div className="card-title">⚖️ Konfirmasi Penimbangan & Pembayaran Digital</div>
-            <div className="card-desc">Settlement transaksi, pemotongan platform fee 8%, & kredit poin RT</div>
+            <span className="category-wireframe-badge">Circular Fintech • Digital Weigh-In</span>
+            <div className="card-title">⚖️ Konfirmasi Penimbangan & Transaksi</div>
+            <div className="card-desc">Settlement penjemputan, fee platform 8%, & transfer saldo RT</div>
           </div>
         </div>
 
@@ -126,7 +128,7 @@ export default function MaggotLogisticsRouting({ bins, onConfirmPickup }) {
             >
               {bins.map((b) => (
                 <option key={b.id} value={b.id}>
-                  {b.id} - {b.name} ({b.currentWeightKg} kg)
+                  {b.id} — {b.name} ({b.currentWeightKg} kg)
                 </option>
               ))}
             </select>
@@ -142,7 +144,7 @@ export default function MaggotLogisticsRouting({ bins, onConfirmPickup }) {
             />
           </div>
 
-          <div className="grid-2">
+          <div className="grid-2" style={{ gap: '1rem' }}>
             <div className="form-group">
               <label className="form-label">Hasil Timbangan Digital (kg):</label>
               <input
@@ -177,39 +179,31 @@ export default function MaggotLogisticsRouting({ bins, onConfirmPickup }) {
             </select>
           </div>
 
-          <div
-            style={{
-              background: 'var(--bg-subtle)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '12px',
-              marginBottom: '1rem',
-              fontSize: '12px'
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span>Total Nilai Kotor (Gross):</span>
+          <div className="settlement-preview-box">
+            <div className="settlement-preview-row">
+              <span style={{ color: 'var(--text-muted)' }}>Total Nilai Kotor (Gross):</span>
               <strong>Rp {gross.toLocaleString()}</strong>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px', color: 'var(--color-warning)' }}>
+            <div className="settlement-preview-row" style={{ color: 'var(--warning-text)' }}>
               <span>Biaya Layanan Platform ({(feeRate * 100).toFixed(0)}%):</span>
               <strong>Rp {fee.toLocaleString()}</strong>
             </div>
             <div
+              className="settlement-preview-row"
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '13px',
-                color: 'var(--color-brand)',
-                borderTop: '1px dashed var(--border-color)',
-                paddingTop: '4px'
+                fontSize: '14px',
+                color: 'var(--brand-text)',
+                borderTop: '1px dashed var(--border-subtle)',
+                paddingTop: '8px',
+                marginTop: '6px'
               }}
             >
-              <span>Kredit Insentif Bersih Warga RT:</span>
+              <span>Kredit Bersih ke Kas Warga RT:</span>
               <strong>Rp {net.toLocaleString()}</strong>
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '0.85rem' }}>
             ✅ Konfirmasi Timbang & Transfer Saldo ke Dompet RT
           </button>
         </form>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { SYSTEM_PROMPT } from '../services/gatekeeper';
 
 export default function GatekeeperAIVision({
   bins,
@@ -27,8 +26,9 @@ export default function GatekeeperAIVision({
       <div className="card">
         <div className="card-header">
           <div>
+            <span className="category-wireframe-badge">AI Vision Core Engine • Gatekeeper</span>
             <div className="card-title">👁️ Gatekeeper AI Vision Inspector</div>
-            <div className="card-desc">Model analitik deteksi kontaminasi pakan larva Black Soldier Fly (BSF)</div>
+            <div className="card-desc">Deteksi mikro & makro kontaminan anorganik pakan larva BSF</div>
           </div>
         </div>
 
@@ -38,13 +38,13 @@ export default function GatekeeperAIVision({
             className="form-control"
             rows={3}
             readOnly
-            style={{ fontFamily: 'var(--font-mono)', fontSize: '11px' }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '11.5px', background: 'var(--bg-subtle)' }}
             value="Identifikasi kontaminasi material non-organik (plastik, logam, kaca) pada permukaan sampah."
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label">Pilih Sampel Uji Citra:</label>
+          <label className="form-label">Pilih Sampel Uji Citra Permukaan:</label>
           <select className="form-select" value={sampleType} onChange={(e) => setSampleType(e.target.value)}>
             <option value="clean_organic">Sampel A: 100% Organik Murni (Sisa Sayur & Nasi)</option>
             <option value="contaminated_plastic">Sampel B: Kontaminasi Plastik Kresek & Sachet</option>
@@ -62,53 +62,65 @@ export default function GatekeeperAIVision({
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
           />
+          <small style={{ color: 'var(--text-muted)', fontSize: '11.5px', marginTop: '4px', display: 'block' }}>
+            *Jika kosong, sistem otomatis menjalankan model inferensi lokal presisi tinggi.
+          </small>
         </div>
 
-        <button className="btn btn-primary" style={{ width: '100%' }} onClick={handleRun} disabled={loading}>
+        <button
+          className="btn btn-primary"
+          style={{ width: '100%', padding: '0.85rem' }}
+          onClick={handleRun}
+          disabled={loading}
+        >
           {loading ? '⏳ Memproses Inferensi Vision API...' : '⚡ Jalankan Gatekeeper AI Vision Inference'}
         </button>
 
         {lastAIResult && (
           <div
             style={{
-              marginTop: '1.25rem',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '1rem',
-              background: 'var(--bg-subtle)'
+              marginTop: '1.75rem',
+              border: `1px solid ${lastAIResult.isContaminated ? 'var(--warning-border)' : 'var(--brand-border)'}`,
+              borderRadius: 'var(--radius-md)',
+              padding: '1.25rem',
+              background: lastAIResult.isContaminated ? 'var(--warning-soft-bg)' : 'var(--brand-soft-bg)'
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
               <span className={`badge ${lastAIResult.isContaminated ? 'badge-warning' : 'badge-success'}`}>
-                {lastAIResult.isContaminated ? 'TERKONTAMINASI!' : 'AMAN (ORGANIK MURNI)'}
+                {lastAIResult.isContaminated ? '⚠️ KONTAMINASI TERDETEKSI' : '✅ AMAN (ORGANIK MURNI)'}
               </span>
               <strong
                 style={{
-                  fontSize: '16px',
-                  color: lastAIResult.isContaminated ? 'var(--color-warning)' : 'var(--color-brand)'
+                  fontSize: '15px',
+                  color: lastAIResult.isContaminated ? 'var(--warning-text)' : 'var(--brand-text)'
                 }}
               >
                 Maggot Safe Score: {lastAIResult.maggotSafeScore}/100
               </strong>
             </div>
-            <div style={{ fontSize: '13px', marginBottom: '0.5rem' }}>{lastAIResult.aiVerdict}</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+
+            <div style={{ fontSize: '13px', marginBottom: '0.75rem', color: 'var(--text-main)', lineHeight: 1.5 }}>
+              {lastAIResult.aiVerdict}
+            </div>
+
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
               <strong>Kontaminan:</strong>{' '}
               {lastAIResult.detectedContaminants.length > 0
                 ? lastAIResult.detectedContaminants.join(', ')
                 : 'Nihil (Bebas Plastik/Kaca/Logam)'}
             </div>
+
             <div
               style={{
-                marginTop: '0.75rem',
-                fontSize: '11px',
-                padding: '6px',
+                fontSize: '12px',
+                padding: '8px 12px',
                 background: '#ffffff',
-                borderRadius: '4px',
-                borderLeft: `3px solid ${lastAIResult.isContaminated ? 'var(--color-warning)' : 'var(--color-brand)'}`
+                borderRadius: '8px',
+                borderLeft: `3px solid ${lastAIResult.isContaminated ? 'var(--warning-primary)' : 'var(--brand-primary)'}`
               }}
             >
-              Sinyal Balik: <strong>{lastAIResult.actionTrigger}</strong>
+              Hardware Trigger: <strong>{lastAIResult.actionTrigger}</strong>
             </div>
           </div>
         )}
@@ -118,7 +130,8 @@ export default function GatekeeperAIVision({
       <div className="card">
         <div className="card-header">
           <div>
-            <div className="card-title">📋 AI Inspection Audit Trail & History</div>
+            <span className="category-wireframe-badge">Audit Trail & Event Log</span>
+            <div className="card-title">📋 AI Inspection Audit Trail</div>
             <div className="card-desc">Riwayat tangkapan kamera dan putusan sistem Gatekeeper</div>
           </div>
         </div>
@@ -130,14 +143,14 @@ export default function GatekeeperAIVision({
                 <th>Waktu</th>
                 <th>ID Tong</th>
                 <th>Status</th>
-                <th>Skor Pakan</th>
-                <th>Kontaminan</th>
+                <th>Skor</th>
+                <th>Kontaminan Terdeteksi</th>
               </tr>
             </thead>
             <tbody>
               {aiLogs.map((log) => (
                 <tr key={log.id}>
-                  <td>{log.timestamp}</td>
+                  <td><small>{log.timestamp}</small></td>
                   <td><strong>{log.binId}</strong></td>
                   <td>
                     <span className={`badge ${log.isContaminated ? 'badge-warning' : 'badge-success'}`}>

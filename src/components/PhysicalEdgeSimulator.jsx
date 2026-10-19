@@ -60,11 +60,12 @@ export default function PhysicalEdgeSimulator({
       <div className="card">
         <div className="card-header">
           <div>
-            <div className="card-title">📦 Smart Communal Bin 120L (Mekanis & Edge HW)</div>
-            <div className="card-desc">Simulasi aksi fisik warga, dispenser bekatul pasif, & ESP32-CAM</div>
+            <span className="category-wireframe-badge">Layer 1 • Physical Hardware Architecture</span>
+            <div className="card-title">📦 Smart Communal Bin 120L</div>
+            <div className="card-desc">Simulasi aksi fisik warga, dispenser bekatul pasif, & pemisahan lindi</div>
           </div>
           <span className={`badge ${lidOpen ? 'badge-warning' : 'badge-success'}`}>
-            {lidOpen ? 'ESP32: WAKING UP (Active)' : 'Deep Sleep: Standby'}
+            {lidOpen ? '⚡ ESP32: WAKING UP (Active)' : '💤 Deep Sleep: Standby'}
           </span>
         </div>
 
@@ -75,29 +76,31 @@ export default function PhysicalEdgeSimulator({
               <small>{lidOpen ? '⚠️ Status: Terbuka! Bekatul & EM4 tertabur otomatis' : '🔒 Status: Tertutup Rapat (Odor Locked)'}</small>
             </div>
             <div className="bin-part part-hopper">
-              🌾 Dispenser Mekanis: Sekam/Bekatul + EM4 Kering (±15g per bukaan)<br />
+              🌾 <strong>Dispenser Mekanis:</strong> Bekatul + EM4 Kering (±15g per bukaan)<br />
               <small>Total Taburan: {currentBin.hopperTriggerCount} takar</small>
             </div>
             <div className="bin-part part-press">
-              ⚙️ French Press Piston Plate (Penekan Serat Sampah Organik)
+              ⚙️ <strong>French Press Plate:</strong> Piston Penekan Serat Sampah Organik
             </div>
             <div className="bin-part part-solid">
               <div>
                 <strong>Kompartemen Sampah Padat</strong><br />
-                <span>Kapasitas: {currentBin.currentFillPercent}% | Berat: {currentBin.currentWeightKg} kg</span>
+                <span style={{ fontSize: '13px', fontWeight: 700 }}>
+                  Kapasitas: {currentBin.currentFillPercent}% • Berat: {currentBin.currentWeightKg} kg
+                </span>
               </div>
             </div>
             <div className="bin-part part-mesh">
               ━━━━ Saringan Plat Stainless Steel Perforated Mesh 1.5mm ━━━━
             </div>
             <div className="bin-part part-leachate">
-              💧 Tangki Cairan Lindi (POC): <strong>{currentBin.leachateVolumeLiters} Liter</strong><br />
-              <small>Keran Bawah: Siap Dipanen Warga / Disemprot Eco-Enzyme</small>
+              💧 <strong>Tangki Penampung Lindi:</strong> <strong>{currentBin.leachateVolumeLiters} Liter</strong><br />
+              <small>Keran Bawah: Siap Panen Pupuk Organik Cair (POC)</small>
             </div>
           </div>
 
-          {/* Physical LED Lights */}
-          <div style={{ marginTop: '15px', display: 'flex', justifyContent: 'center', gap: '15px' }}>
+          {/* Physical LED Lights Feedback */}
+          <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
             <div className="led-box">
               <div className={`physical-led ${ledSignal === 'GREEN' ? 'green-on' : ''}`}></div>
               <span>LED Hijau (Pakan Aman)</span>
@@ -109,13 +112,13 @@ export default function PhysicalEdgeSimulator({
           </div>
         </div>
 
-        <div style={{ marginTop: '1.25rem' }}>
-          <div className="grid-2">
+        <div style={{ marginTop: '1.75rem' }}>
+          <div className="grid-2" style={{ gap: '1rem' }}>
             <button className="btn btn-primary" onClick={handleOpenLid}>
-              🔄 Simulasi Warga Buka Tutup Tong
+              🔄 Buka Tutup Tong (Warga Buang)
             </button>
             <button className="btn btn-secondary" onClick={handlePressFrenchPress}>
-              ⏬ Tekan French Press (Ekstraksi Lindi)
+              ⏬ Tekan French Press (Ekstraksi)
             </button>
           </div>
         </div>
@@ -125,13 +128,14 @@ export default function PhysicalEdgeSimulator({
       <div className="card">
         <div className="card-header">
           <div>
+            <span className="category-wireframe-badge">Layer 2 • Edge Computing & Sensor Hub</span>
             <div className="card-title">📡 ESP32-CAM Sensor Ingestion Hub</div>
-            <div className="card-desc">Pengaturan nilai sensor HC-SR04, Load Cell, & trigger pengiriman payload</div>
+            <div className="card-desc">Konfigurasi nilai sensor HC-SR04, Load Cell HX711, & transmisi payload</div>
           </div>
         </div>
 
         <div className="form-group">
-          <label className="form-label">Pilih Tong Komunal:</label>
+          <label className="form-label">Pilih Titik Tong Komunal:</label>
           <select
             className="form-select"
             value={currentBin.id}
@@ -139,16 +143,17 @@ export default function PhysicalEdgeSimulator({
           >
             {bins.map((bin) => (
               <option key={bin.id} value={bin.id}>
-                {bin.id} - {bin.name}
+                {bin.id} — {bin.name}
               </option>
             ))}
           </select>
         </div>
 
         <div className="form-group">
-          <label className="form-label">
-            Tinggi Sampah / Ultrasonik HC-SR04: <strong>{currentBin.currentFillPercent}%</strong>
-          </label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+            <span className="form-label" style={{ marginBottom: 0 }}>Tinggi Sampah / Sensor Ultrasonik HC-SR04:</span>
+            <strong style={{ color: 'var(--brand-primary)' }}>{currentBin.currentFillPercent}%</strong>
+          </div>
           <input
             type="range"
             className="form-control"
@@ -160,9 +165,10 @@ export default function PhysicalEdgeSimulator({
         </div>
 
         <div className="form-group">
-          <label className="form-label">
-            Timbangan Load Cell HX711: <strong>{currentBin.currentWeightKg} kg</strong>
-          </label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+            <span className="form-label" style={{ marginBottom: 0 }}>Timbangan Load Cell HX711 (Berat):</span>
+            <strong style={{ color: 'var(--brand-primary)' }}>{currentBin.currentWeightKg} kg</strong>
+          </div>
           <input
             type="range"
             className="form-control"
@@ -175,7 +181,7 @@ export default function PhysicalEdgeSimulator({
         </div>
 
         <div className="form-group">
-          <label className="form-label">Pilihan Sampel Foto Kamera OV2640 untuk Gatekeeper AI:</label>
+          <label className="form-label">Sampel Tangkapan Kamera OV2640 untuk Gatekeeper AI:</label>
           <select
             className="form-select"
             value={samplePhoto}
@@ -183,17 +189,21 @@ export default function PhysicalEdgeSimulator({
           >
             <option value="clean_organic">Sampel A: 100% Organik Murni (Sisa Sayur & Nasi)</option>
             <option value="contaminated_plastic">Sampel B: Kontaminasi Plastik Kresek & Sachet</option>
-            <option value="contaminated_glass_metal">Sampel C: Kontaminasi Pecahan Kaca & Tutup Botol Logam</option>
+            <option value="contaminated_glass_metal">Sampel C: Kontaminasi Pecahan Kaca & Logam</option>
             <option value="borderline_tissue">Sampel D: Campuran Organik + Kertas Tisu Basah</option>
           </select>
         </div>
 
-        <button className="btn btn-warning" style={{ width: '100%', marginTop: '0.5rem' }} onClick={handleTransmitEdge}>
+        <button
+          className="btn btn-warning"
+          style={{ width: '100%', marginTop: '0.5rem', padding: '0.85rem' }}
+          onClick={handleTransmitEdge}
+        >
           🚀 Kirim Payload ESP32 ke Cloud (HTTPS POST Image & JSON)
         </button>
 
-        <div style={{ marginTop: '1rem' }}>
-          <div className="form-label">Edge Console & Serial Monitor (115200 baud):</div>
+        <div style={{ marginTop: '1.5rem' }}>
+          <div className="form-label">Edge Serial Monitor & Debug Console (115200 baud):</div>
           <div className="terminal-box">
             {terminalLogs.map((log, index) => (
               <div key={index} className={`terminal-line ${log.type}`}>
